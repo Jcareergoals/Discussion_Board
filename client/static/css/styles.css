@@ -1,7 +1,7 @@
 .login_container {
 	margin-top: 80px;
 }
-.search_field {float: right;}
+.search_field, .right {float: right;}
 .test {
 	background-color: rgba(250,0,0,.3); 
 	border: 1px solid black;

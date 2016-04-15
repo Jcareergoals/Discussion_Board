@@ -6,3 +6,5 @@
 	background-color: rgba(250,0,0,.3); 
 	border: 1px solid black;
 }
+hr {border: 1px solid black;}
+/*.bottom_border {border-bottom: 1px solid black;}*/

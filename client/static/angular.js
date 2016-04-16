@@ -9,12 +9,19 @@ board.config(function($routeProvider){
 		.otherwise({redirectTo:'/'})
 }); 
 
-board.factory('', function($http){
+board.factory('loginFactory', function($http){
 	var factory = {}; 
-	// code for factory
-	return factory
+	var name = '';
+	factory.name = function(data){
+		name = data; 
+		console.log(data);
+	}
+	return factory;
 }); 
 
-board.controller('', function($scope){
-	// code for controller in here
+board.controller('login', function($scope, loginFactory){ 
+	$scope.login = function(){
+		loginFactory.name($scope.name);
+	}
+	// code for controller  here
 }); 

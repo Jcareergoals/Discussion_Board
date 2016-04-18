@@ -1,13 +1,13 @@
 <div class="row">
 	<div class="col-xs-10 col-xs-offset-2">
-		<form name='frm' ng-controller='SessionController' class='login_container'>
+		<form name='frm' action='/login' method='post' class='login_container'>
 			<h4 class='col-xs-12'>Hello!</h4>
 			<p class='col-xs-12'>Please enter your name to join and share your ideas</p>
 			<div class="form-group col-xs-3">
-				<input type='text' class='form-control' name='name' placeholder='Enter name here' ng-model='name' required ng-minlength='4'>
+				<input type='text' class='form-control' name='name' ng-model='name' placeholder='Enter name here' required ng-minlength='4'>
 			</div>
 			<div class="form-group col-xs-12">
-				<a href="#/dashboard"><button type='submit' class='btn btn-primary col-xs-offset-3' ng-disabled='frm.$invalid' ng-click='createNewSession()'>Enter</button></a>
+				<button type='submit' class='btn btn-primary col-xs-offset-3' ng-disabled='frm.$invalid'>Enter</button>
 			</div>
 			<span ng-show='frm.name.$dirty && frm.name.$error.required'>Name is required</span>
 			<span ng-show='frm.name.$dirty && frm.name.$error.minlength'>Too short</span>

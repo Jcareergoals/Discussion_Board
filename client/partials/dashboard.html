@@ -1,8 +1,8 @@
-<div class='row'>
+<div class='row' ng-controller='DashboardController'>
 	<div class="col-xs-10 col-xs-offset-1">
-		<h4 class='col-xs-12'>Welcome, name</h4>
+		<h4 class='col-xs-12'>Welcome, {{ name }}</h4>
 		<div class="col-xs-3 col-sm-2 col-xs-offset-9">
-			<input type='text' class='form-control .search_field'>
+			<input type='text' class='form-control .search_field' ng-model='filterName'>
 		</div>
 		<button type='submit' class='btn btn-default'>Search</button>
 	</div>
@@ -14,17 +14,11 @@
 				<th class='col-xs-2'>User Name</th>
 				<th class='col-xs-2'>Posts</th>
 			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+			<tr ng-repeat='topic in topics | filter:filterName'>
+				<td>{{ topic.category }}</td>
+				<td><a href="">{{ topic.topic }}</a></td>
+				<td><a href="">{{ topic.created_by }}</a></td>
+				<td>{{ topic.count }}</td>
 			</tr>
 		</table>
 	</div>
@@ -34,27 +28,27 @@
 			<div class="form-group">
 				<label for='topic' class='control-label col-xs-2'>Topic:</label>
 				<div class="col-xs-10">
-					<input type='text' id='topic' class='form-control'>
+					<input type='text' id='topic' class='form-control' ng-model='newTopic.topic'>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for='description' class='control-label col-xs-2'>Description:</label>
 				<div class="col-xs-10">
-					<textarea id='description' class='form-control'></textarea>
+					<textarea id='description' class='form-control' ng-model='newTopic.description'></textarea>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for='category' class='control-label col-xs-2'>Category</label>
 				<div class="col-xs-3">
-					<select class="form-control">
-						<option></option>
-						<option></option>
+					<select class="form-control" ng-model='newTopic.category'>
+						<option value='html'>html</option>
+						<option value='work'>work</option>
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-xs-12">
-					<button class='btn btn-success right'>Submit</button>
+					<button class='btn btn-success right' ng-click='addTopic()'>Submit</button>
 				</div>
 			</div>
 		</form>

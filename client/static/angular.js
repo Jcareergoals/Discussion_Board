@@ -9,19 +9,20 @@ board.config(function($routeProvider){
 		.otherwise({redirectTo:'/'})
 }); 
 
-board.factory('loginFactory', function($http){
+board.factory('SessionFactory', function(){
+	var sessionName = '';
 	var factory = {}; 
-	var name = '';
-	factory.name = function(data){
-		name = data; 
-		console.log(data);
+	factory.createSession = function(data){
+		sessionName = data; 
+	}
+	factory.getSessionName = function(callback){
+		callback(sessionName);
 	}
 	return factory;
 }); 
 
-board.controller('login', function($scope, loginFactory){ 
-	$scope.login = function(){
-		loginFactory.name($scope.name);
+board.controller('SessionController', function($scope, SessionFactory){ 
+	$scope.createNewSession = function(){
+		SessionFactory.createSession($scope.name);
 	}
-	// code for controller  here
 }); 

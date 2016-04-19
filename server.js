@@ -39,6 +39,9 @@ var UsersSchema = new mongoose.Schema({
 mongoose.model('Topics', TopicsSchema); 
 mongoose.model('Users', UsersSchema);
 
+var Topics = mongoose.model('Topics');
+var Users = mongoose.model('Users');
+
 // Temps 
 var categories = ['HTML','Ruby on Rails','UX','Web Development']; 
 var topics = ['work', 'Getting through stress', 'jackson']; 
@@ -63,6 +66,18 @@ app
 	})
 	.get('/session', function(req, res){
 		res.json(sessionName)
+	})
+	.get('/topics', function(req, res){
+		res.json({topic:'board', category:'html',description:'i love playing'})
+	})
+	.post('/topics', function(req, res){
+		console.log(req.body)
+		var topic = new Topics(req.body)
+		console.log(topic)
+		topic.save(); 
+		Topics.find({}, function(err, data){
+			res.json(data)
+		})
 	})
 	
 

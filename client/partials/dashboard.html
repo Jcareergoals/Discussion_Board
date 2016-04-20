@@ -16,7 +16,7 @@
 			</tr>
 			<tr ng-repeat='topic in topics | filter:filterName'>
 				<td>{{ topic.category }}</td>
-				<td><a href="">{{ topic.topic }}</a></td>
+				<td><a href="#/topic/{{topic._id}}">{{ topic.topic }}</a></td>
 				<td><a href="">{{ topic.created_by }}</a></td>
 				<td>{{ topic.count }}</td>
 			</tr>

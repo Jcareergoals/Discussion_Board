@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
 // Connect to Mongo Database (MongoDB)
-mongoose.connect('mongodb://localhost:discussion_board'); 
+mongoose.connect('mongodb://localhost/discussion_board'); 
 
 // Create model schemas 
 var TopicsSchema = new mongoose.Schema({
@@ -19,9 +19,13 @@ var TopicsSchema = new mongoose.Schema({
 	category:String, 
 	description:String,
 	date:{type:Date, default:Date.now}, 
+	count: 0,
+	created_by: String,
 	_messages:[{
 		created_by:String, 
 		content:String, 
+		likes: 0, 
+		dislikes: 0,
 		created_at:{type:Date, default:Date.now},
 		_comments:[{
 			created_by:String, 
@@ -44,40 +48,57 @@ var Users = mongoose.model('Users');
 
 // Temps 
 var categories = ['HTML','Ruby on Rails','UX','Web Development']; 
-var topics = ['work', 'Getting through stress', 'jackson']; 
 var sessionName = '';
 
 // Routes
 app
 	.get('/topics', function(req, res){
-		res.json(topics)
+		Topics.find({}, function(err, data){
+			// console.log(data)
+			res.json(data)
+		})
 	})
 	.get('/html', function(req, res){
 		res.json(categories)
 	})
 	.post('/login', function(req, res){
-		sessionName = req.body.name;
 		if(req.body.name){
+			sessionName = req.body.name;
 			res.redirect('/#/dashboard');
 		} else {
 			console.log('Please enter a name');
-			console.log('laksdjf;lajdsf');
+			res.redirect('/');
 		}
 	})
 	.get('/session', function(req, res){
 		res.json(sessionName)
 	})
-	.get('/topics', function(req, res){
-		res.json({topic:'board', category:'html',description:'i love playing'})
+	.get('/topic/:id', function(req, res){
+		Topics.find({_id:req.params.id}, function(err, data){
+			res.json(data)
+		})
 	})
 	.post('/topics', function(req, res){
-		console.log(req.body)
 		var topic = new Topics(req.body)
-		console.log(topic)
+		topic.created_by = sessionName; 
 		topic.save(); 
 		Topics.find({}, function(err, data){
 			res.json(data)
 		})
+	})
+	.post('/messages', function(req, res){
+		console.log(req.body);
+		var message = {}
+		message.created_by = req.body.created_by
+		message.content = req.body.content
+		Topics.update({_id:req.body.id}, {$push:{_messages:message}}, function(err, data){
+			console.log(err, data)
+			Topics.find({_id:req.body.id}, function(err, data){
+				console.log(err, data)
+				res.json(data)
+			})
+		})
+		// Topics.update({_id:req.body.id}, {$push{_messages:}})
 	})
 
 // Set listening port

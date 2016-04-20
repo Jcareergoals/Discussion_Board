@@ -79,7 +79,6 @@ app
 			res.json(data)
 		})
 	})
-	
 
 // Set listening port
 app.listen(8000, function(){

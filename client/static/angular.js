@@ -22,20 +22,14 @@ board.factory('SessionFactory', function($http){
 // topic factory
 board.factory('TopicFactory', function($http){
 	factory = {}; 
-	// topics = []; 
 	factory.index = function(callback){
 		$http.get('/topics').success(function(data){
 			callback(data); 
 		}); 
-		// callback(topics);
 	}
 	factory.create = function(data, callback){
-		// topics.push(data);
-		// console.log(topics);
-		// callback(topics);
 		$http.post('/topics', data).success(function(data){
 			console.log(data);
-			// callback(data);
 		}); 
 	}
 	return factory; 

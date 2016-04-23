@@ -24,8 +24,8 @@ var TopicsSchema = new mongoose.Schema({
 	_messages:[{
 		created_by:String, 
 		content:String, 
-		likes: 0, 
-		dislikes: 0,
+		likes: {type: Number, default: 0}, 
+		dislikes: {type: Number, default: 0},
 		created_at:{type:Date, default:Date.now},
 		_comments:[{
 			created_by:String, 
@@ -92,13 +92,25 @@ app
 		message.created_by = req.body.created_by
 		message.content = req.body.content
 		Topics.update({_id:req.body.id}, {$push:{_messages:message}}, function(err, data){
-			console.log(err, data)
+			// console.log(data)
 			Topics.find({_id:req.body.id}, function(err, data){
-				console.log(err, data)
+				// console.log(data)
 				res.json(data)
 			})
 		})
-		// Topics.update({_id:req.body.id}, {$push{_messages:}})
+	})
+	.post('/likes', function(req, res){
+		console.log(req.body)
+		res.json('dkjfd')
+	})
+	.post('/dislikes', function(req, res){
+		// console.log(req.body)
+		Topics.find({_id:req.body.topic_id}, function(err, data){
+			data.update({_messages.id:req.body.message_id}, {dislikes: += 1}, function(err, data){
+				console.log(err, data)
+			})
+		})
+		res.json('dfdf')
 	})
 
 // Set listening port

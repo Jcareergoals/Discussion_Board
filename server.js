@@ -91,8 +91,7 @@ app
 		var message = {}
 		message.created_by = req.body.created_by
 		message.content = req.body.content
-		Topics.update({_id:req.body.id}, {$push:{_messages:message}}, function(err, data){
-			// console.log(data)
+		Topics.update({_id:req.body.id}, {$push:{_messages:message}, $inc:{count:1}}, function(err, data){
 			Topics.find({_id:req.body.id}, function(err, data){
 				// console.log(data)
 				res.json(data)
@@ -100,17 +99,30 @@ app
 		})
 	})
 	.post('/likes', function(req, res){
-		console.log(req.body)
-		res.json('dkjfd')
+		Topics.findOne({_id:req.body.topic_id}, function(err, data){
+			for(var i = 0; i < data._messages.length; i++){
+				if(data._messages[i]._id == req.body.message_id){
+					data._messages[i].likes += 1 
+					data.save()
+					Topics.find({_id:req.body.topic_id}, function(err, data){
+						res.json(data)
+					})
+				} 
+			}
+		})
 	})
 	.post('/dislikes', function(req, res){
-		// console.log(req.body)
-		Topics.find({_id:req.body.topic_id}, function(err, data){
-			data.update({_messages.id:req.body.message_id}, {dislikes: += 1}, function(err, data){
-				console.log(err, data)
-			})
+		Topics.findOne({_id:req.body.topic_id}, function(err, data){
+			for(var i = 0; i < data._messages.length; i++){
+				if(data._messages[i]._id == req.body.message_id){
+					data._messages[i].dislikes += 1 
+					data.save()
+					Topics.find({_id:req.body.topic_id}, function(err, data){
+						res.json(data)
+					})
+				} 
+			}
 		})
-		res.json('dfdf')
 	})
 
 // Set listening port

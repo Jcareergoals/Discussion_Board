@@ -50,7 +50,7 @@ var board = angular.module('board', ['ngRoute']);
 			});
 		}
 		factory.dislike = function(data, callback){
-			$http.post('/dislikes/', data).success(function(data){
+			$http.post('/dislikes', data).success(function(data){
 				callback(data);
 			}); 
 		}
@@ -97,6 +97,7 @@ var board = angular.module('board', ['ngRoute']);
 		}
 		$scope.addLike = function(data){
 			TopicFactory.like(data, function(data){
+				console.log(data)
 				$scope.topic = data[0];
 			});
 		}

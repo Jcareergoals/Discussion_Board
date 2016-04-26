@@ -10,6 +10,7 @@
 		<label class='col-xs-offset-1 col-xs-10'>{{ topic.topic }}</label>	
 		<p class='col-xs-offset-1 col-xs-10'>{{ topic.description }}</p>
 		<p class='col-xs-12'>Post your answer here:</p>	
+		<!-- Message Form -->
 		<form class='form'>
 			<div class="form-group col-xs-offset-1 col-xs-10">
 				<textarea class='form-control' placeholder='Answer here' ng-model='newMessage.content'></textarea>
@@ -21,6 +22,7 @@
 				<hr> <!-- line break -->
 			</div>
 		</form>
+		<!-- Like & Dislike Form -->
 		<div class="col-xs-10 col-xs-offset-1" ng-repeat='message in topic._messages'>
 			<div class="col-xs-10"><a href="">{{ message.created_by }} </a>{{ message.content }}</div>
 			<div class="col-xs-2">
@@ -29,14 +31,19 @@
 					{{ message.dislikes }} <button class='btn btn-danger' ng-click="addDislike({topic_id:topic._id, message_id:message._id})">&darr;</button>
 				</form>
 			</div>
-			<div class="col-xs-offset-1 col-xs-11" ng-repeat='comment in message._comment'>
-				<a href="">Oliver: </a>I strongly agree!
+			<!-- Comments Form -->
+				<!-- Below is the form for submitting a comment   still in the implementation process  -->
+
+			<div class="col-xs-offset-1 col-xs-11" >
+				<div>
+					<a href="" ng-repeat='comment in message._comments'>Name: </a>person's comment
+				</div>
 				<form class='form'>
 					<div class="form-group">
-						<textarea class='form-control' placeholder='Comment on this answer'></textarea>
+						<textarea type='text' class='form-control' ng-model='newComment.content'></textarea>
 					</div>
 					<div class="form-group right">
-						<button class='btn btn-success'>Comment</button>
+						<button class='btn btn-default' ng-click='addComment()'>Comment</button>
 					</div>
 				</form>
 			</div>

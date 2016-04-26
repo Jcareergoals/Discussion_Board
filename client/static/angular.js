@@ -88,7 +88,7 @@ var board = angular.module('board', ['ngRoute']);
 		}); 
 		$scope.addMessage = function(){
 			$scope.newMessage.created_by = $scope.name; 
-			$scope.newMessage.id = $scope.topic._id; 
+			$scope.newMessage.topic_id = $scope.topic._id; 
 			TopicFactory.createMessage($scope.newMessage, function(data){
 				// 'Topic' object
 				$scope.topic = data[0];
@@ -105,5 +105,8 @@ var board = angular.module('board', ['ngRoute']);
 			TopicFactory.dislike(data, function(data){
 				$scope.topic = data[0];
 			}); 
+		}
+		$scope.addComment = function(){
+			console.log($scope)
 		}
 	}); 

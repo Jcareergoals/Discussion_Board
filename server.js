@@ -36,7 +36,10 @@ var TopicsSchema = new mongoose.Schema({
 }); 
 var UsersSchema = new mongoose.Schema({
 	name: String, 
-	created_at:{type:Date, default:Date.now}
+	created_at:{type:Date, default:Date.now}, 
+	topics: {type:Number, default: 0}, 
+	posts: {type:Number, default: 0}, 
+	comments: {type:Number, default: 0}
 }); 
 
 // Create Mongoose models 
@@ -54,49 +57,61 @@ var sessionName = '';
 app
 	.get('/topics', function(req, res){
 		Topics.find({}, function(err, data){
-			// console.log(data)
 			res.json(data)
 		})
-	})
-	.get('/html', function(req, res){
-		res.json(categories)
-	})
-	.post('/login', function(req, res){
-		if(req.body.name){
-			sessionName = req.body.name;
-			res.redirect('/#/dashboard');
-		} else {
-			console.log('Please enter a name');
-			res.redirect('/');
-		}
-	})
-	.get('/session', function(req, res){
-		res.json(sessionName)
 	})
 	.get('/topic/:id', function(req, res){
 		Topics.find({_id:req.params.id}, function(err, data){
 			res.json(data)
 		})
 	})
+	.get('/session', function(req, res){
+		res.json(sessionName)
+	})
+
+	
+	.post('/login', function(req, res){
+		if(req.body.name){
+			sessionName = req.body.name
+			Users.find({name:req.body.name}, function(err, data){
+				if(data.length == 0){
+					var user = new Users(req.body)
+					user.save()
+				} else {
+					sessionName = data[0].name
+				}
+				res.redirect('/#/dashboard')
+			})
+		} else {
+			console.log('Please enter a name')
+			res.redirect('/')
+		}
+	})
 	.post('/topics', function(req, res){
 		var topic = new Topics(req.body)
-		topic.created_by = sessionName; 
-		topic.save(); 
-		Topics.find({}, function(err, data){
-			res.json(data)
-		})
-	})
-	.post('/messages', function(req, res){
-		console.log(req.body);
-		var message = {}
-		message.created_by = req.body.created_by
-		message.content = req.body.content
-		Topics.update({_id:req.body.id}, {$push:{_messages:message}, $inc:{count:1}}, function(err, data){
-			Topics.find({_id:req.body.id}, function(err, data){
-				// console.log(data)
+		console.log(req.body)
+		Users.update({name:req.body.created_by}, {$inc:{topics:1}}, function(err, data){
+			topic.save()
+			Topics.find({}, function(err, data){
 				res.json(data)
 			})
 		})
+	})
+	.post('/messages', function(req, res){
+		var message = {
+			created_by:req.body.created_by, 
+			content:req.body.content, 
+		}
+		Topics.update({_id:req.body.topic_id}, {$push:{_messages:message}, $inc:{count:1}}, function(err, data){
+			Users.update({name:req.body.created_by}, {$inc:{posts:1}}, function(err, data){
+				Topics.find({_id:req.body.topic_id}, function(err, data){
+					res.json(data)
+				})
+			})
+		})
+	})
+	.post('/comments', function(req, res){
+		
 	})
 	.post('/likes', function(req, res){
 		Topics.findOne({_id:req.body.topic_id}, function(err, data){

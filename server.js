@@ -68,7 +68,11 @@ app
 	.get('/session', function(req, res){
 		res.json(sessionName)
 	})
-
+	.get('/users/:name', function(req, res){
+		Users.findOne({name:req.params.name}, function(err, data){
+			res.json(data)
+		})
+	})
 	
 	.post('/login', function(req, res){
 		if(req.body.name){
@@ -124,7 +128,8 @@ app
 				}
 			}
 		})
-		Users.update({name: req.body.created_by}, {$inc:{comments:1}}, function(){
+		Users.update({name: req.body.created_by}, {$inc:{comments:1}}, function(err, data){
+				console.log(err, data)
 			Topics.findOne({_id:req.body.topic_id}, function(err, data){
 				res.json(data)
 			})

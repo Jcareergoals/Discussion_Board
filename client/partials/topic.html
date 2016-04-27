@@ -25,7 +25,7 @@
 		<!-- Messages & Comments -->
 		<div class="topic_messages col-xs-12 ">
 			<div class="col-xs-10 col-xs-offset-1" ng-repeat='message in topic._messages | orderBy:"-_id"'>
-				<div class="col-xs-10"><a href="/user/{{ message.created_by }}">{{ message.created_by }} </a>{{ message.content }}</div>
+				<div class="col-xs-10"><a href="#/user/{{ message.created_by }}">{{ message.created_by }} </a>{{ message.content }}</div>
 				<!-- Like & Dislike Form -->
 				<div class="col-xs-2">
 						{{ message.likes }} <button class='btn btn-success' ng-click="addLike({topic_id:topic._id, message_id:message._id})">&uarr;</button>
@@ -35,7 +35,7 @@
 				<div class="col-xs-offset-1 col-xs-11" >
 					<div class="topic_comments">
 						<div ng-repeat='comment in message._comments | orderBy:"-_id"'>
-							<a href="/user/{{ message.created_by }}">{{ comment.created_by }} </a>{{ comment.content }}
+							<a href="#/user/{{ message.created_by }}">{{ comment.created_by }} </a>{{ comment.content }}
 						</div>
 					</div>
 					<form>

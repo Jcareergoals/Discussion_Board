@@ -5,7 +5,7 @@ var board = angular.module('board', ['ngRoute']);
 			.when('/', {templateUrl:'./../partials/login.html'})
 			.when('/dashboard', {templateUrl:'./../partials/dashboard.html'})
 			.when('/topic/:id', {templateUrl:'./../partials/topic.html'})
-			.when('/user', {templateUrl:'./../partials/user.html'})
+			.when('/user/:name', {templateUrl:'./../partials/user.html'})
 			.otherwise({redirectTo:'/'})
 	}); 
 	// session factory
@@ -70,7 +70,7 @@ var board = angular.module('board', ['ngRoute']);
 			console.log(data);
 		}); 
 		$scope.addTopic = function(){
-			$scope.newTopic.created_by = $scope.name; 
+			$scope.newTopic.created_by = $scope.session_name; 
 			$scope.newTopic.count = 0; 
 			TopicFactory.create($scope.newTopic, function(data){
 				$scope.newTopic = {}; 
@@ -112,4 +112,22 @@ var board = angular.module('board', ['ngRoute']);
 				console.log(data._messages);
 			}); 
 		}
+	}); 
+// user factory
+	board.factory('UserFactory', function($http){
+		var factory = {}; 
+		factory.index = function(data, callback){
+			$http.get('/users/'+data).success(function(data){
+				callback(data);
+			}); 
+		}
+		return factory; 
+	}); 
+// user controller
+	board.controller('UserController', function($scope, $routeParams, UserFactory){
+		$scope.user = '';
+		UserFactory.index($routeParams.name, function(data){
+			$scope.user = data;
+			console.log(data);   
+		}); 
 	}); 

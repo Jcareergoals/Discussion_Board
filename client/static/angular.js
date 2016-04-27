@@ -80,7 +80,6 @@ var board = angular.module('board', ['ngRoute']);
 	}); 
 // topics controller
 	board.controller('topicsController', function($scope, SessionFactory, TopicFactory, $routeParams){
-		// $scope.name = '';
 		$scope.topic = {}; 
 		SessionFactory.index(function(data){
 			$scope.name = data;

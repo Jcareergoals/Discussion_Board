@@ -49,8 +49,7 @@ mongoose.model('Users', UsersSchema);
 var Topics = mongoose.model('Topics');
 var Users = mongoose.model('Users');
 
-// Temps 
-var categories = ['HTML','Ruby on Rails','UX','Web Development']; 
+// session
 var sessionName = '';
 
 // Routes
@@ -93,7 +92,6 @@ app
 	})
 	.post('/topics', function(req, res){
 		var topic = new Topics(req.body)
-		console.log(req.body)
 		Users.update({name:req.body.created_by}, {$inc:{topics:1}}, function(err, data){
 			topic.save()
 			Topics.find({}, function(err, data){
@@ -115,7 +113,6 @@ app
 		})
 	})
 	.post('/comments', function(req, res){
-		console.log(req.body)
 		Topics.findOne({_id:req.body.topic_id}, function(err, data){
 			for(i in data._messages){
 				if(data._messages[i]._id == req.body.message_id){
@@ -129,7 +126,7 @@ app
 			}
 		})
 		Users.update({name: req.body.created_by}, {$inc:{comments:1}}, function(err, data){
-				console.log(err, data)
+			console.log(err, data)
 			Topics.findOne({_id:req.body.topic_id}, function(err, data){
 				res.json(data)
 			})

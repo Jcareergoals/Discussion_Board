@@ -33,8 +33,6 @@ var board = angular.module('board', ['ngRoute']);
 		}
 		factory.create = function(data, callback){
 			$http.post('/topics', data).success(function(data){
-				console.log('This is the response');
-				console.log(data);
 				callback(data);
 			}); 
 		}
@@ -67,7 +65,6 @@ var board = angular.module('board', ['ngRoute']);
 		}); 
 		TopicFactory.index(function(data){
 			$scope.topics = data; 
-			console.log(data);
 		}); 
 		$scope.addTopic = function(){
 			$scope.newTopic.created_by = $scope.session_name; 
@@ -86,7 +83,6 @@ var board = angular.module('board', ['ngRoute']);
 		}); 
 		TopicFactory.getTopic($routeParams.id, function(data){
 			$scope.topic = data; 
-			console.log(data); 
 		}); 
 		$scope.addMessage = function(){
 			$scope.newMessage.created_by = $scope.name; 
@@ -109,7 +105,6 @@ var board = angular.module('board', ['ngRoute']);
 			data.created_by = $scope.name; 
 			TopicFactory.createComment(data, function(data){
 				$scope.topic._messages = data._messages; 
-				console.log(data._messages);
 			}); 
 		}
 	}); 
@@ -128,6 +123,5 @@ var board = angular.module('board', ['ngRoute']);
 		$scope.user = '';
 		UserFactory.index($routeParams.name, function(data){
 			$scope.user = data;
-			console.log(data);   
 		}); 
 	}); 

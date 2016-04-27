@@ -61,7 +61,7 @@ app
 		})
 	})
 	.get('/topic/:id', function(req, res){
-		Topics.find({_id:req.params.id}, function(err, data){
+		Topics.findOne({_id:req.params.id}, function(err, data){
 			res.json(data)
 		})
 	})
@@ -102,41 +102,58 @@ app
 			created_by:req.body.created_by, 
 			content:req.body.content, 
 		}
-		Topics.update({_id:req.body.topic_id}, {$push:{_messages:message}, $inc:{count:1}}, function(err, data){
-			Users.update({name:req.body.created_by}, {$inc:{posts:1}}, function(err, data){
-				Topics.find({_id:req.body.topic_id}, function(err, data){
+		Topics.update({_id:req.body.topic_id}, {$push:{_messages:message}, $inc:{count:1}}, function(){
+			Users.update({name:req.body.created_by}, {$inc:{posts:1}}, function(){
+				Topics.findOne({_id:req.body.topic_id}, function(err, data){
 					res.json(data)
 				})
 			})
 		})
 	})
 	.post('/comments', function(req, res){
-		
+		console.log(req.body)
+		Topics.findOne({_id:req.body.topic_id}, function(err, data){
+			for(i in data._messages){
+				if(data._messages[i]._id == req.body.message_id){
+					var comment = {
+						created_by: req.body.created_by,
+						content: req.body.comment 
+					}
+					data._messages[i]._comments.push(comment)
+					data.save()
+				}
+			}
+		})
+		Users.update({name: req.body.created_by}, {$inc:{comments:1}}, function(){
+			Topics.findOne({_id:req.body.topic_id}, function(err, data){
+				res.json(data)
+			})
+		})
 	})
 	.post('/likes', function(req, res){
 		Topics.findOne({_id:req.body.topic_id}, function(err, data){
-			for(var i = 0; i < data._messages.length; i++){
+			for(i in data._messages){
 				if(data._messages[i]._id == req.body.message_id){
 					data._messages[i].likes += 1 
 					data.save()
-					Topics.find({_id:req.body.topic_id}, function(err, data){
-						res.json(data)
-					})
 				} 
 			}
+		})
+		Topics.findOne({_id:req.body.topic_id}, function(err, data){
+			res.json(data)
 		})
 	})
 	.post('/dislikes', function(req, res){
 		Topics.findOne({_id:req.body.topic_id}, function(err, data){
-			for(var i = 0; i < data._messages.length; i++){
+			for(i in data._messages){
 				if(data._messages[i]._id == req.body.message_id){
 					data._messages[i].dislikes += 1 
 					data.save()
-					Topics.find({_id:req.body.topic_id}, function(err, data){
-						res.json(data)
-					})
 				} 
 			}
+		})
+		Topics.findOne({_id:req.body.topic_id}, function(err, data){
+			res.json(data)
 		})
 	})
 

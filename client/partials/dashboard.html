@@ -1,6 +1,11 @@
 <div class='row' ng-controller='DashboardController'>
 	<div class="col-xs-10 col-xs-offset-1">
-		<h4 class='col-xs-12'>Welcome, {{ name }}</h4>
+		<div class="col-xs-offset-9 col-sm-offset-11">
+			<a href="#/">Logout</a>	
+		</div> 
+	</div>	
+	<div class="col-xs-10 col-xs-offset-1">
+		<h4 class='col-xs-12'>Welcome, {{ session_name }}</h4>
 		<div class="col-xs-3 col-sm-2 col-xs-offset-9">
 			<input type='text' class='form-control .search_field' ng-model='filterName'>
 		</div>
@@ -43,10 +48,6 @@
 					<select class="form-control" ng-model='newTopic.category'>
 						<option value='html'>html</option>
 						<option value='work'>work</option>
-						<option></option>
-						<option></option>
-						<option></option>
-						<option></option>
 					</select>
 				</div>
 			</div>

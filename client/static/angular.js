@@ -11,7 +11,6 @@ var board = angular.module('board', ['ngRoute']);
 	// session factory
 	board.factory('SessionFactory', function($http){
 		var factory = {}; 
-		var sessionName = '';
 		factory.index = function(callback){
 			$http.get('/session').success(function(data){
 				callback(data);
@@ -54,12 +53,17 @@ var board = angular.module('board', ['ngRoute']);
 				callback(data);
 			}); 
 		}
+		factory.createComment = function(data, callback){
+			$http.post('/comments', data).success(function(data){
+				callback(data); 
+			}); 
+		}
 		return factory; 
 	}); 
 // dashboard controller
 	board.controller('DashboardController', function($scope, SessionFactory, TopicFactory){
 		SessionFactory.index(function(data){
-			$scope.name = data;
+			$scope.session_name = data;
 		}); 
 		TopicFactory.index(function(data){
 			$scope.topics = data; 
@@ -76,37 +80,37 @@ var board = angular.module('board', ['ngRoute']);
 	}); 
 // topics controller
 	board.controller('topicsController', function($scope, SessionFactory, TopicFactory, $routeParams){
-		$scope.name = '';
+		// $scope.name = '';
 		$scope.topic = {}; 
 		SessionFactory.index(function(data){
 			$scope.name = data;
 		}); 
 		TopicFactory.getTopic($routeParams.id, function(data){
-			// The response data is the 'topic' object
-			$scope.topic = data[0]; 
+			$scope.topic = data; 
 			console.log(data); 
 		}); 
 		$scope.addMessage = function(){
 			$scope.newMessage.created_by = $scope.name; 
 			$scope.newMessage.topic_id = $scope.topic._id; 
 			TopicFactory.createMessage($scope.newMessage, function(data){
-				// 'Topic' object
-				$scope.topic = data[0];
-				console.log(data);
+				$scope.topic = data;	
 			}); 
 		}
 		$scope.addLike = function(data){
 			TopicFactory.like(data, function(data){
-				console.log(data)
-				$scope.topic = data[0];
+				$scope.topic = data;
 			});
 		}
 		$scope.addDislike = function(data){
 			TopicFactory.dislike(data, function(data){
-				$scope.topic = data[0];
+				$scope.topic = data;
 			}); 
 		}
-		$scope.addComment = function(){
-			console.log($scope)
+		$scope.addComment = function(data){
+			data.created_by = $scope.name; 
+			TopicFactory.createComment(data, function(data){
+				$scope.topic._messages = data._messages; 
+				console.log(data._messages);
+			}); 
 		}
 	}); 

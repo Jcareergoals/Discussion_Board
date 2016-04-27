@@ -2,9 +2,22 @@
 	margin-top: 80px;
 }
 .search_field, .right {float: right;}
+hr {border: 1px solid black;}
+.topic_messages {
+	max-height: 500px; 
+	overflow: auto; 
+}
+.topic_comments {
+	max-height: 100px; 
+	overflow: auto; 
+	background-color: rgb(250,250,250);
+	border-radius: 3px 3px 0px 0px; 
+	box-shadow: 0px 0px 3px black inset;  
+	padding: 3px; 
+}
+
+/* use for testing purposes only*/
 .test {
 	background-color: rgba(250,0,0,.3); 
 	border: 1px solid black;
 }
-hr {border: 1px solid black;}
-/*.bottom_border {border-bottom: 1px solid black;}*/

@@ -31,6 +31,11 @@ var board = angular.module('board', ['ngRoute']);
 				callback(data);
 			}); 
 		}
+		factory.getCategories = function(callback){
+			$http.get('/categories').success(function(data){
+				callback(data);
+			});
+		}
 		factory.create = function(data, callback){
 			$http.post('/topics', data).success(function(data){
 				callback(data);
@@ -66,6 +71,9 @@ var board = angular.module('board', ['ngRoute']);
 		TopicFactory.index(function(data){
 			$scope.topics = data; 
 		}); 
+		TopicFactory.getCategories(function(data){
+			$scope.categories = data; 
+		});
 		$scope.addTopic = function(){
 			$scope.newTopic.created_by = $scope.session_name; 
 			$scope.newTopic.count = 0; 

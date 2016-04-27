@@ -51,6 +51,7 @@ var Users = mongoose.model('Users');
 
 // session
 var sessionName = '';
+var categories = ['Work', 'Education', 'Relationships', 'Diet', 'Hobbies']; 
 
 // Routes
 app
@@ -71,6 +72,9 @@ app
 		Users.findOne({name:req.params.name}, function(err, data){
 			res.json(data)
 		})
+	})
+	.get('/categories', function(req, res){
+		res.json(categories)
 	})
 	
 	.post('/login', function(req, res){
